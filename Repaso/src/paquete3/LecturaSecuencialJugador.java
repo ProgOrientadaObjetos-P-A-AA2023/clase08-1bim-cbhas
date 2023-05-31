@@ -65,6 +65,33 @@ public class LecturaSecuencialJugador {
             }
         }
     }
+    
+    public void establecerVerificacionJugadores() {
+        // 
+        jugadores = new ArrayList<>();
+        File f = new File(obtenerNombreArchivo());
+        if (f.exists()) {
+
+            while (true) {
+                try {
+                    Jugador registro = (Jugador) entrada.readObject();
+                    jugadores.add(registro);
+                } catch (EOFException endOfFileException) {
+                    return; // se llegó al fin del archivo
+                    // se puede usar el break;
+                    // System.err.println("Fin de archivo: " + endOfFileException);
+
+                } catch (IOException ex) {
+                    System.err.println("Error al leer el archivo: " + ex);
+                } catch (ClassNotFoundException ex) {
+                    System.err.println("No se pudo crear el objeto: " + ex);
+                } catch (Exception ex) {
+                    System.err.println("No hay datos en el archivo: " + ex);
+
+                }
+            }
+        }
+    }
 
     public ArrayList<Jugador> obtenerJugadores() {
         return jugadores;
