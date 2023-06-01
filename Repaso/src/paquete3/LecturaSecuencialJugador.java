@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package paquete3;
 
 import java.io.EOFException;
@@ -19,6 +14,7 @@ public class LecturaSecuencialJugador {
     private ObjectInputStream entrada;
     private ArrayList<Jugador> jugadores;
     private String nombreArchivo;
+    private Jugador registroBuscado;
 
     public LecturaSecuencialJugador(String n) {
         nombreArchivo = n;
@@ -65,21 +61,20 @@ public class LecturaSecuencialJugador {
             }
         }
     }
-    
-    public void establecerVerificacionJugadores() {
-        // 
-        jugadores = new ArrayList<>();
+
+    public void establecerVerificacion(String cadena) {
+
         File f = new File(obtenerNombreArchivo());
         if (f.exists()) {
 
             while (true) {
                 try {
                     Jugador registro = (Jugador) entrada.readObject();
-                    jugadores.add(registro);
+                    if (registro.obtenerNombre().equals(cadena)) {
+                        registroBuscado = registro;
+                    }
                 } catch (EOFException endOfFileException) {
-                    return; // se llegó al fin del archivo
-                    // se puede usar el break;
-                    // System.err.println("Fin de archivo: " + endOfFileException);
+                    return;
 
                 } catch (IOException ex) {
                     System.err.println("Error al leer el archivo: " + ex);
@@ -95,6 +90,10 @@ public class LecturaSecuencialJugador {
 
     public ArrayList<Jugador> obtenerJugadores() {
         return jugadores;
+    }
+
+    public Jugador obtenerVerificacion() {
+        return registroBuscado;
     }
 
     public String obtenerNombreArchivo() {
